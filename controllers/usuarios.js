@@ -3,8 +3,18 @@ const express = require('express');
 const Usuario = require('../models/usuario_model');
 const ruta = express.Router();
 
+//Endpoint de tipo GET para el recurso usuarios. Lista todos los usuarios
 ruta.get('/', (req,res)=>{
-    res.json('Respuesta a peticion GET de CURSOS funcionando correctamente...');
+    let resultado = listarUsuariosActivos();
+    resultado.then(usuarios => {
+        res.json(usuarios)
+    }).catch(err => {
+        res.status(400).json(
+            {
+                err
+            }
+        )
+    })
 });
 
 // Validacones para el objeto usuario
@@ -111,5 +121,13 @@ ruta.delete('/:email', (req, res) => {
         })
     });
 });
+
+//Funcion asincrona para listar todos los usuarios activos
+async function listarUsuariosActivos() {
+    let usuarios = await Usuario.find({"estado": true});
+    return usuarios;    
+}
+
+
 
 module.exports = ruta;
