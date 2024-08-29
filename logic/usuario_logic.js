@@ -5,7 +5,7 @@ const Joi = require('@hapi/joi');
 const schema = Joi.object({
     nombre: Joi.string()
         .min(3)
-        .пах (30)
+        .max(30)
         .required()
         .pattern(/^[A-Za-záéíóú ]{3,30}$/),
 
@@ -13,7 +13,7 @@ const schema = Joi.object({
         .pattern(/^[a-zA-Z0-9]{3,30}$/),
 
     email: Joi.string()
-        .email({ minDomainSegnents: 2, tlds: { allow: ['com', 'net', 'edu', 'co'] } })
+        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'edu', 'co'] } })
 });
 
 //Funcion asincrona para crear un objeto de tipo usuario

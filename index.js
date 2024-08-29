@@ -1,11 +1,13 @@
 const usuarios = require('./controllers/usuarios');
-const cursos = require('./controllers/cursos')
+const cursos = require('./controllers/cursos');
+const Joi = require('@hapi/joi');
+
 
 const express = require('express'); 
 const mongoose = require('mongoose');
 
 // Conexión a la base de datos MongoDB
-mongoose.connect('mongodb+srv://amdresesp21:kd1VuQUUtE5ilB37@labnode.rs49c.mongodb.net/?retryWrites=true&w=majority&appName=LabNode')
+mongoose.connect('mongodb://localhost:27017/userscoursesdb')
   .then(() => console.log('Conectado a MongoDB.. ')) 
   .catch(err => console.log('No se pudo conectar con MongoDB..', err));
 

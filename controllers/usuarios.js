@@ -43,24 +43,29 @@ ruta.post('/', (req, res) => {
 
 //Endpoint de tipo PUT para actualizar los datos del usuario
 ruta.put('/:email', (req, res) => {
-    const {error, value} = logic.schema.validate({nombre: req.body.nombre});
+    const {error, value} = Joi.object({
+        nombre: Joi.string()
+            .min(3)
+            .max(30)
+            .pattern(/^[A-Za-záéíóú ]{3,30}$/),
+        password: Joi.string()
+            .pattern(/^[a-zA-Z0-9]{3,30}$/)
+    }).validate(req.body);
+
     if(!error){
         let resultado = logic.actualizarUsuario(req.params.email, req.body);
         resultado.then(valor => {
-            res.json({
-                valor
-            })
+            res.json({ valor });
         }).catch(err => {
-            res.status(400).json({
-                err
-            })
+            console.error('Error al actualizar usuario:', err);
+            res.status(400).json({ err });
         });
-    }else{
-        res.status(400).json({
-            error
-        })
+    } else {
+        console.error('Error de validación:', error);
+        res.status(400).json({ error });
     }
 });
+
 
 //Endpoint de tipo DELETE para el recurso USUARIOS
 ruta.delete('/:email', (req, res) => {
