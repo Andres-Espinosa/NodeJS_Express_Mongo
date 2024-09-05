@@ -1,16 +1,16 @@
-const mongoose = require( 'mongoose');
+const mongoose = require('mongoose');
 
 const cursoSchema = new mongoose.Schema({
     titulo: {
-        type:String,
+        type: String,
         required: true
     },
     descripcion: {
-        type:String, 
+        type: String,
         required: false
     },
     estado: {
-        type: Boolean, 
+        type: Boolean,
         default: true
     },
     imagen: {
