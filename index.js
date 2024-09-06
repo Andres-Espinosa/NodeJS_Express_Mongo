@@ -1,28 +1,46 @@
-const usuarios = require('./controllers/usuarios');
-const cursos = require('./controllers/cursos');
-const Joi = require('@hapi/joi');
-
-
-const express = require('express'); 
+const express = require('express');
 const mongoose = require('mongoose');
+const { swaggerUi, swaggerSpec } = require('./swagger/Swagger'); // Importa Swagger
 
-// Conexión a la base de datos MongoDB
-mongoose.connect('mongodb://localhost:27017/userscoursesdb')
-  .then(() => console.log('Conectado a MongoDB.. ')) 
-  .catch(err => console.log('No se pudo conectar con MongoDB..', err));
+// Importar rutas
+const cursosRoutes = require('./routes/cursos_routes');
+const usuariosRoutes = require('./routes/usuarios_routes');
 
-// Middleware
+// Importar la función de semillas
+const seedDatabase = require('./seed/seeds');
+
+// Crear la aplicación Express
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
+// Configuración de Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-//end points (recursos)
-app.use('/api/usuarios', usuarios);
-app.use('/api/cursos', cursos);
+// Conexión a la base de datos de MongoDB
+mongoose.connect('')
+    .then(async () => {
+        console.log('Conectado a MongoDB');
 
+        // Ejecutar la siembra de la base de datos
+        await seedDatabase();
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log('Api REST Ok, y ejecutándose...');
-});
+        // Middleware
+        app.use(express.json()); // Middleware para parsear JSON
+        app.use(express.urlencoded({ extended: true }));
+
+        // Rutas de la aplicación
+        app.use('/api/cursos', cursosRoutes);
+        app.use('/api/usuarios', usuariosRoutes);
+
+        // Manejo de errores
+        app.use((err, req, res, next) => {
+            console.error(err.stack);
+            res.status(500).send('Algo salió mal!');
+        });
+
+        // Iniciar el servidor
+        const PORT = process.env.PORT || 3000;
+        app.listen(PORT, () => {
+            console.log(`Servidor corriendo en http://localhost:${PORT}`);
+        });
+    })
+    .catch(err => console.log('No se pudo conectar con MongoDB..', err));
