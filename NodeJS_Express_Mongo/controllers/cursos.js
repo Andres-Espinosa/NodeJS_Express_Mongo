@@ -22,7 +22,8 @@ const crearCurso = async (req, res) => {
         estado: body.estado,
         imagen: body.imagen,
         alumnos: body.alumnos,
-        calificacion: body.calificacion
+        calificacion: body.calificacion,
+        curso: body.curso
     });
 
     if (error) {
@@ -50,7 +51,8 @@ const actualizarCurso = async (req, res) => {
         estado: body.estado,
         imagen: body.imagen,
         alumnos: body.alumnos,
-        calificacion: body.calificacion
+        calificacion: body.calificacion,
+        curso: body.curso
     });
     if (error) {
         return res.status(400).json({ error: error.details[0].message });

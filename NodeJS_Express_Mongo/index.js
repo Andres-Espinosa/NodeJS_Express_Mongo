@@ -16,7 +16,7 @@ const app = express();
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Conexión a la base de datos de MongoDB
-mongoose.connect('')
+mongoose.connect('mongodb+srv://amdresesp21:kd1VuQUUtE5ilB37@labnode.rs49c.mongodb.net/?retryWrites=true&w=majority&appName=LabNode')
     .then(async () => {
         console.log('Conectado a MongoDB');
 
