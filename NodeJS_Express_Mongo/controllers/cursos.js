@@ -22,8 +22,7 @@ const crearCurso = async (req, res) => {
         estado: body.estado,
         imagen: body.imagen,
         alumnos: body.alumnos,
-        calificacion: body.calificacion,
-        curso: body.curso
+        calificacion: body.calificacion
     });
 
     if (error) {
